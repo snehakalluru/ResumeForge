@@ -8,3 +8,11 @@
 @media(max-width:900px){.app{padding:18px}.topbar,.section-heading,.builder-toolbar,.modal-head{align-items:flex-start;flex-direction:column}.gallery{grid-template-columns:1fr}.builder-grid{grid-template-columns:1fr}.editor{max-height:none}.preview-column{position:static}.ats-column{display:flex}.theme-controls{flex-wrap:wrap}.field-grid{grid-template-columns:1fr}.resume-page{min-height:900px}footer{align-items:flex-start;gap:20px;flex-direction:column}.workspace{margin-top:24px}}
 @media(max-width:560px){.creative>header{align-items:flex-start;flex-wrap:wrap}.creative>header .resume-contact{margin-left:0;justify-content:flex-start}.resume-page.modern,.creative-body{grid-template-columns:1fr}.modern>aside,.creative-body>aside{padding:25px}.modern>main,.creative-body>main{padding:25px}.classic{padding:28px}.modal{padding:8px}.modal-canvas{padding:8px}}
 @media print{body{background:#fff;padding:0}.resume-page{box-shadow:none}}
+
+/* Keep actions legible for every user-selected accent and color mode. */
+.btn,.small-btn{color:var(--accent-contrast,#fff);border:1px solid color-mix(in srgb,var(--accent-contrast,#fff) 38%,var(--accent));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent-contrast,#fff) 10%,transparent)}
+.mode-btn.active{color:var(--accent-contrast,#fff);border-color:color-mix(in srgb,var(--accent-contrast,#fff) 42%,var(--accent))}
+.template-thumb.creative-professional .mock-name{color:var(--accent-contrast,#fff)}
+.btn.ghost{color:var(--text);border-color:color-mix(in srgb,var(--text) 24%,var(--border));box-shadow:none}
+.btn:focus-visible,.small-btn:focus-visible,.mode-btn:focus-visible,.remove-btn:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 55%,var(--text));outline-offset:2px}
+button:disabled,.btn[aria-disabled=true]{opacity:.72;cursor:not-allowed;filter:saturate(.65)}

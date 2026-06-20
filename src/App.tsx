@@ -9,6 +9,12 @@ import type { ResumeData, TemplateId, ThemeState } from './types'
 
 const DATA_KEY='resumeforge:resume', TEMPLATE_KEY='resumeforge:template', THEME_KEY='resumeforge:theme', JD_KEY='resumeforge:jd'
 const read=<T,>(key:string,fallback:T):T=>{ try { const raw=localStorage.getItem(key); return raw?JSON.parse(raw):fallback } catch { return fallback } }
+const accentContrast=(hex:string)=>{
+  const value=hex.replace('#','')
+  const rgb=[0,2,4].map(index=>parseInt(value.slice(index,index+2),16)/255)
+  const linear=rgb.map(channel=>channel<=.04045?channel/12.92:((channel+.055)/1.055)**2.4)
+  return .2126*linear[0]+.7152*linear[1]+.0722*linear[2]>.42?'#08111f':'#ffffff'
+}
 
 export default function App(){
   const [data,setData]=useState<ResumeData>(()=>withIds(read(DATA_KEY,read('rf:resume:draft',emptyResume))))
@@ -19,7 +25,7 @@ export default function App(){
   useEffect(()=>localStorage.setItem(DATA_KEY,JSON.stringify(data)),[data])
   useEffect(()=>localStorage.setItem(TEMPLATE_KEY,JSON.stringify(template)),[template])
   useEffect(()=>localStorage.setItem(JD_KEY,JSON.stringify(jd)),[jd])
-  useEffect(()=>{localStorage.setItem(THEME_KEY,JSON.stringify(theme));document.documentElement.dataset.theme=theme.mode;document.documentElement.style.setProperty('--accent',theme.accent);document.documentElement.style.setProperty('--base-font-size',`${theme.fontSize}px`)},[theme])
+  useEffect(()=>{localStorage.setItem(THEME_KEY,JSON.stringify(theme));document.documentElement.dataset.theme=theme.mode;document.documentElement.style.setProperty('--accent',theme.accent);document.documentElement.style.setProperty('--accent-contrast',accentContrast(theme.accent));document.documentElement.style.setProperty('--base-font-size',`${theme.fontSize}px`)},[theme])
   const selectTemplate=(id:TemplateId)=>{setTemplate(id);setTimeout(()=>editorRef.current?.scrollIntoView({behavior:'smooth'}),0)}
   const loadSample=()=>{const populated=JSON.stringify(data)!==JSON.stringify(emptyResume);if(populated&&!confirm('Replace your current resume with realistic sample data?'))return;setData(sampleResumes[template])}
   return <div className="app">
